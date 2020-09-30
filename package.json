@@ -1,5 +1,5 @@
 {
-  "name": "PROYECT_NAME",
+  "name": "@piros/stream",
   "version": "0.0.1",
   "description": "",
   "main": "./dist/index.js",
@@ -12,20 +12,22 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Binarysearch/REPOSITORY_NAME.git"
+    "url": "git+https://github.com/Binarysearch/piros-stream.git"
   },
   "author": "Antonio Ruiz Gutierrez",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Binarysearch/REPOSITORY_NAME/issues"
+    "url": "https://github.com/Binarysearch/piros-stream/issues"
   },
-  "homepage": "https://github.com/Binarysearch/REPOSITORY_NAME#readme",
+  "homepage": "https://github.com/Binarysearch/piros-stream#readme",
   "devDependencies": {
-    "@types/node": "~8.9.4",
-    "ts-loader": "^7.0.0"
+    "@types/node": "14.11.2",
+    "ts-loader": "8.0.4"
   },
   "dependencies": {
-    "@types/node": "^13.13.5",
-    "typescript": "^3.8.3"
+    "@piros/ioc": "0.0.6",
+    "kafkajs": "1.14.0",
+    "rxjs": "^6.6.3",
+    "typescript": "4.0.3"
   }
 }
