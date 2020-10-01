@@ -1,4 +1,4 @@
-import { Kafka } from 'kafkajs';
+import { Kafka, PartitionMetadata, Message, ICustomPartitioner } from 'kafkajs';
 import { KafkaProducer, MessageSource } from '../producer/kafka-producer';
 import { Observable, Subject } from 'rxjs';
 import { KafkaConsumer } from '../consumer/consumer';
