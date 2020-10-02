@@ -1,7 +1,7 @@
-import { Kafka, PartitionMetadata, Message, ICustomPartitioner } from 'kafkajs';
+import { Kafka } from 'kafkajs';
 import { KafkaProducer, MessageSource } from '../producer/kafka-producer';
 import { Observable, Subject } from 'rxjs';
-import { KafkaConsumer } from '../consumer/consumer';
+import { KafkaConsumer } from '../consumer/kafka-consumer';
 
 export interface KafkaClientConfig {
     clientId: string;
