@@ -1,6 +1,7 @@
 import { Kafka } from 'kafkajs';
-import { KafkaProducer, MessageSource } from '../producer/kafka-producer';
-import { Observable, Subject } from 'rxjs';
+import { KafkaProducer } from '../producer/kafka-producer';
+import { Observable, Subject, from } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { KafkaConsumer } from '../consumer/kafka-consumer';
 
 export interface KafkaClientConfig {
@@ -21,29 +22,11 @@ export class KafkaClient {
         });
     }
     
-    public createProducer<T>(topic: string, source: MessageSource<T>): Observable<KafkaProducer> {
-        return new Observable((obs) => {
-            const producer = this.kafka.producer();
-            producer.connect().then(() => {
-
-                source.subscribe(
-                    (m) => {
-                        producer.send({
-                            topic: topic,
-                            messages: [{ value: JSON.stringify(m) }]
-                        });
-                    },
-                    () => {
-                        producer.disconnect().then(() => {
-
-                        });
-                    }
-                );
-
-                obs.next(new KafkaProducer(producer));
-                obs.complete();
-            }).catch((e) => obs.error(e));
-        });
+    public createProducer<T>(topic: string): Observable<KafkaProducer<T>> {
+        const producer = this.kafka.producer({ retry: { retries: 10 } });
+        return from(producer.connect()).pipe(
+            map(() => new KafkaProducer<T>(producer, topic))
+        );
     }
     
     public createConsumer<T>(topic: string, groupId: string): KafkaConsumer<T> {
@@ -51,7 +34,7 @@ export class KafkaClient {
         const subject = new Subject<T>();
 
         consumer.connect().then(() => {
-            consumer.subscribe({ topic: topic, fromBeginning: true }).then(() => {
+            consumer.subscribe({ topic: topic }).then(() => {
                 consumer.run({
                     eachMessage: async ({ topic, partition, message }) => {
                         subject.next(JSON.parse(message.value.toString()));
